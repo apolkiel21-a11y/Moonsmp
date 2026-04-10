@@ -3,101 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moon SMP | Official Season 2 Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <title>Moon SMP | Official Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
             --moon-dark: #050508;
+            --moon-glow: #1a1b26;
             --sakura-pink: #ffb7c5;
-            --judicial-purple: #bd93f9;
+            --sakura-glow: rgba(255, 183, 197, 0.4);
+            --emergency-red: #ff5555;
             --text-main: #e0e0e0;
         }
-        body { margin: 0; font-family: 'Quicksand', sans-serif; background-color: var(--moon-dark); color: var(--text-main); }
-        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
-        .navbar { display: flex; justify-content: space-between; padding: 15px 5%; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--sakura-pink); position: fixed; width: 90%; z-index: 1000; }
-        .container { padding: 120px 8% 40px 8%; text-align: center; }
-        .card { background: #1a1b26; padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
-        .main-logo { max-width: 250px; filter: drop-shadow(0 0 15px var(--sakura-pink)); margin-bottom: 20px; }
-        .org-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
-        .member-card { background: rgba(255,255,255,0.05); border: 1px solid var(--sakura-pink); padding: 15px; border-radius: 10px; width: 220px; }
-        .role { display: block; font-size: 0.7rem; color: var(--sakura-pink); font-family: 'Orbitron'; margin-top: 5px; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; }
-        .btn { border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; font-family: 'Orbitron'; background: var(--sakura-pink); color: #000; }
+
+        body { 
+            margin: 0; 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: var(--moon-dark); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+        }
+
+        h1, h2, h3, .logo { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Responsive Navbar */
+        .navbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 10px 5%; 
+            background: rgba(5, 5, 8, 0.95); 
+            border-bottom: 1px solid var(--sakura-glow); 
+            position: fixed; 
+            top: 0; left: 0; right: 0; 
+            z-index: 1000; 
+        }
+        .nav-logo-img { height: 35px; border-radius: 50%; border: 1px solid var(--sakura-pink); margin-right: 10px; }
+
+        /* Main Layout */
+        .container { padding: 100px 5% 40px 5%; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .card { background: var(--moon-glow); padding: 25px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        /* Clock Grid (Fluid) */
+        .clock-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 30px 0; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .clock-unit { background: rgba(0, 0, 0, 0.6); padding: 15px 5px; border-radius: 10px; border: 1px solid var(--sakura-pink); box-shadow: 0 0 10px var(--sakura-glow); }
+        .clock-num { font-family: 'Orbitron'; font-size: 1.5rem; color: var(--sakura-pink); display: block; }
+        .clock-label { font-size: 0.5rem; text-transform: uppercase; opacity: 0.8; }
+
+        /* Form Styling */
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; font-size: 16px; font-family: 'Quicksand'; }
+        .btn { border: none; padding: 16px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; font-family: 'Orbitron'; background: var(--sakura-pink); color: #000; transition: 0.3s; margin-top: 10px; }
+        .btn:hover { background: #fff; box-shadow: 0 0 20px var(--sakura-pink); transform: translateY(-2px); }
+        .btn-emergency { background: var(--emergency-red); color: white; margin-top: 20px; }
+        .btn-emergency:hover { box-shadow: 0 0 20px var(--emergency-red); }
+
         .hidden { display: none; }
+        .status-badge { font-size: 0.65rem; color: var(--sakura-pink); border: 1px solid var(--sakura-pink); padding: 4px 12px; border-radius: 4px; display: inline-block; margin-top: 10px; font-weight: bold; }
+        .auth-link { color: var(--sakura-pink); cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
+
+        /* Hierarchy & Logo Assets */
+        .main-logo { width: 100%; max-width: 180px; filter: drop-shadow(0 0 15px var(--sakura-glow)); margin-bottom: 10px; }
+        .org-chart-img { width: 100%; border-radius: 15px; border: 1px solid var(--sakura-pink); margin-top: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+
+        /* Desktop Overrides */
+        @media (min-width: 768px) {
+            .clock-num { font-size: 2.5rem; }
+            .clock-container { gap: 20px; }
+            .card { padding: 40px; }
+            h1 { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="logo">MOON SMP</div>
-        <div class="nav-links">Season 2 | Portal</div>
+        <div class="logo" style="display: flex; align-items: center; font-size: 1rem;">
+            <img src="logo.jpg" class="nav-logo-img" onerror="this.src='https://i.ibb.co/hR8hV96/2941.jpg'">
+            <span>MOON <span style="color: var(--sakura-pink);">SMP</span></span>
+        </div>
+        <div style="font-size: 0.5rem; font-weight: bold; opacity: 0.7;">V2.0 STABLE</div>
     </nav>
 
     <div class="container">
-        <img src="https://i.ibb.co/hR8hV96/2941.jpg" class="main-logo" alt="Moon SMP Season 2">
-        <h1>Command Center</h1>
+        <img src="logo.jpg" class="main-logo" alt="Moon SMP" onerror="this.src='https://i.ibb.co/hR8hV96/2941.jpg'">
+        <h1 style="font-size: 1.5rem;">Operation: Sakura Moon</h1>
 
-        <section id="auth" class="card" style="max-width: 500px; margin: 0 auto 50px auto;">
-            <h3>Citizen Authentication</h3>
-            <div id="step-1">
-                <input type="text" id="mcUser" placeholder="Minecraft Username">
-                <input type="email" id="email" placeholder="Email Address">
-                <button class="btn" onclick="sendOTP()">Request OTP</button>
+        <div class="clock-container">
+            <div class="clock-unit"><span class="clock-num" id="days">00</span><span class="clock-label">Days</span></div>
+            <div class="clock-unit"><span class="clock-num" id="hours">00</span><span class="clock-label">Hours</span></div>
+            <div class="clock-unit"><span class="clock-num" id="mins">00</span><span class="clock-label">Mins</span></div>
+            <div class="clock-unit"><span class="clock-num" id="secs">00</span><span class="clock-label">Secs</span></div>
+        </div>
+
+        <section class="card" style="max-width: 500px; margin: 0 auto 50px auto;">
+            
+            <div id="login-box">
+                <h3>Access Portal</h3>
+                <input type="text" id="lUser" placeholder="Username">
+                <input type="password" id="lPass" placeholder="Password or Staff Code">
+                <button class="btn" onclick="handleLogin()">Login</button>
+                <p style="margin-top: 20px;">
+                    <span class="auth-link" onclick="toggleAuth('reg')">Register New Member</span>
+                </p>
             </div>
-            <div id="step-2" class="hidden">
-                <input type="text" id="otp" placeholder="Enter OTP Code">
-                <button class="btn" onclick="verify()">Verify Login</button>
+
+            <div id="reg-box" class="hidden">
+                <h3>Member Sign-Up</h3>
+                <p style="font-size: 0.7rem; opacity: 0.7;">Create a personal account for Season 2 updates.</p>
+                <input type="text" id="rUser" placeholder="Choose Username">
+                <input type="password" id="rPass" placeholder="Choose Password">
+                <button class="btn" onclick="handleRegister()">Create Account</button>
+                <p style="margin-top: 20px;">
+                    <span class="auth-link" onclick="toggleAuth('login')">Return to Login</span>
+                </p>
             </div>
-            <div id="profile" class="hidden">
+
+            <div id="profile-box" class="hidden">
                 <p>Welcome, <strong id="userDisplay"></strong></p>
-                <button class="btn" onclick="location.reload()">Logout</button>
-            </div>
-        </section>
+                <div id="staff-tier" class="hidden"><span class="status-badge">CLEARANCE: CHAIRPERSON</span></div>
+                <div id="member-tier" class="hidden"><span class="status-badge">CLEARANCE: CITIZEN</span></div>
 
-        <section id="leadership">
-            <h2>Administration & Staff</h2>
-            <div class="org-row">
-                <div class="member-card">
-                    <strong>KIEL APOLINARIO</strong>
-                    <span class="role">CHAIRPERSON</span>
+                <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin: 25px 0;">
+
+                <div id="staff-controls" class="hidden">
+                    <h3 style="color: var(--emergency-red);">🚨 Emergency Blast</h3>
+                    <textarea id="emergencyMsg" placeholder="Enter critical server announcement..."></textarea>
+                    <button class="btn btn-emergency" id="blastBtn" onclick="initiateBlast()">Send Email Blast</button>
                 </div>
-            </div>
-            <div class="org-row">
-                <div class="member-card"><strong>ROJIE ABLOLA</strong><span class="role">SERVER JUDGE</span></div>
-                <div class="member-card"><strong>HANNA DEGUIRA</strong><span class="role">SERVER JUDGE</span></div>
-                <div class="member-card"><strong>ZARC MUFFLIN</strong><span class="role">SERVER PRESIDENT</span></div>
-            </div>
-            <div class="org-row">
-                <div class="member-card"><strong>CHRISTIAN AQUINO</strong><span class="role">DEPT. OF SOCIAL AND DEV.</span></div>
-                <div class="member-card"><strong>ASTER KANEKO</strong><span class="role">PUBLIC INFO OFFICER</span></div>
+
+                <div id="member-controls">
+                    <h4>Member Resources</h4>
+                    <p style="font-size: 0.8rem;">Season 2 launch protocols are being finalized. Check Discord for whitelist status.</p>
+                    <button class="btn" style="background:#333; color:white; font-size:0.7rem;" onclick="alert('Rules coming soon...')">Server Rules</button>
+                </div>
+
+                <button class="btn" onclick="location.reload()" style="background:none; color:var(--sakura-pink); border:1px solid var(--sakura-pink); margin-top:40px; font-size: 0.7rem;">Logout</button>
             </div>
         </section>
 
-        <section id="petitions" class="card" style="margin-top: 50px; border-left: 5px solid var(--judicial-purple);">
-            <h3>Judicial Filing</h3>
-            <p>Direct submission to Judges Rojie and Hanna.</p>
-            <textarea id="petitionContent" placeholder="Describe your case..."></textarea>
-            <button class="btn" style="background: var(--judicial-purple); color: white;" onclick="submit()">Submit Petition</button>
+        <section>
+            <h2 style="color: var(--sakura-pink); font-size: 1.2rem;">Organizational Hierarchy</h2>
+            <img src="hierarchy.png" class="org-chart-img" onerror="this.src='https://i.ibb.co/6P89B37/2868.png'">
         </section>
     </div>
 
     <script>
-        function sendOTP() {
-            if(document.getElementById('mcUser').value) {
-                document.getElementById('step-1').classList.add('hidden');
-                document.getElementById('step-2').classList.remove('hidden');
+        // Initialize EmailJS with your Public Key
+        (function() { emailjs.init("YNaPHPT4Ov5pdGYuR"); })();
+
+        const CHAIRPERSON_CODE = "Moon2026";
+
+        function toggleAuth(view) {
+            document.getElementById('login-box').classList.toggle('hidden', view === 'reg');
+            document.getElementById('reg-box').classList.toggle('hidden', view === 'login');
+        }
+
+        function handleRegister() {
+            const u = document.getElementById('rUser').value.trim();
+            const p = document.getElementById('rPass').value.trim();
+            if(!u || !p) { alert("Please fill all fields."); return; }
+            
+            localStorage.setItem('msmp_' + u, p);
+            alert("Account created! Log in now.");
+            toggleAuth('login');
+        }
+
+        function handleLogin() {
+            const u = document.getElementById('lUser').value.trim();
+            const p = document.getElementById('lPass').value.trim();
+            const savedPassword = localStorage.getItem('msmp_' + u);
+
+            if (p === CHAIRPERSON_CODE) {
+                renderDashboard(u, 'staff');
+            } else if (savedPassword && savedPassword === p) {
+                renderDashboard(u, 'member');
+            } else {
+                alert("Incorrect username or password.");
             }
         }
-        function verify() {
-            const user = document.getElementById('mcUser').value;
-            document.getElementById('step-2').classList.add('hidden');
-            document.getElementById('profile').classList.remove('hidden');
-            document.getElementById('userDisplay').innerText = user;
-        }
-        function submit() {
-            alert("Petition filed successfully for judicial review.");
-            document.getElementById('petitionContent').value = "";
-        }
-    </script>
-</body>
-</html>
+
+        function renderDashboard(name, type) {
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('reg-box').classList.add('hidden');
+            document.getElementById('profile-box').classList.remove('hidden');
+            document.getElementById('userDisplay').innerText = name;
+
+            if(type === 'staff') {
+                document.getElementById('
