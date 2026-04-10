@@ -190,4 +190,46 @@
             document.getElementById('userDisplay').innerText = name;
 
             if(type === 'staff') {
-                document.getElementById('
+                document.getElementById('staff-tier').classList.remove('hidden');
+                document.getElementById('staff-controls').classList.remove('hidden');
+            } else {
+                document.getElementById('member-tier').classList.remove('hidden');
+            }
+        }
+
+        function initiateBlast() {
+            const msg = document.getElementById('emergencyMsg').value;
+            const btn = document.getElementById('blastBtn');
+            if(!msg) return;
+
+            btn.innerText = "TRANSMITTING...";
+            btn.disabled = true;
+
+            emailjs.send('service_jnaqic9', 'template_8l64zex', {
+                from_name: "CHAIRPERSON EMERGENCY",
+                message: msg,
+                to_email: 'apolkiel21@gmail.com'
+            }).then(() => {
+                alert("EMERGENCY BLAST SENT SUCCESSFULLY.");
+                btn.innerText = "BLAST SENT";
+            }).catch(() => {
+                alert("TRANSMISSION ERROR.");
+                btn.disabled = false;
+            });
+        }
+
+        // Global Countdown Logic
+        const targetDate = new Date("April 17, 2026 18:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            if (distance > 0) {
+                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("secs").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
