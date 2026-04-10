@@ -3,155 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moon SMP | Official Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Moon SMP | Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
             --moon-dark: #050508;
-            --moon-glow: #1a1b26;
             --sakura-pink: #ffb7c5;
-            --sakura-glow: rgba(255, 183, 197, 0.4);
-            --emergency-red: #ff5555;
-            --text-main: #e0e0e0;
+            --glass: rgba(26, 27, 38, 0.9);
+            --emergency: #ff5555;
         }
 
         body { 
             margin: 0; 
+            padding: 0;
             font-family: 'Quicksand', sans-serif; 
             background-color: var(--moon-dark); 
-            color: var(--text-main); 
-            line-height: 1.6; 
-            overflow-x: hidden; 
+            color: #e0e0e0; 
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        h1, h2, h3, .logo { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+        /* Sakura Canvas - Layered behind content */
+        #sakura-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            pointer-events: none;
+        }
 
-        /* Responsive Navbar */
         .navbar { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 10px 5%; 
-            background: rgba(5, 5, 8, 0.95); 
-            border-bottom: 1px solid var(--sakura-glow); 
-            position: fixed; 
-            top: 0; left: 0; right: 0; 
-            z-index: 1000; 
+            width: 100%;
+            height: 60px;
+            background: rgba(0,0,0,0.95);
+            border-bottom: 1px solid var(--sakura-pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .nav-logo-img { height: 35px; border-radius: 50%; border: 1px solid var(--sakura-pink); margin-right: 10px; }
 
-        /* Main Layout */
-        .container { padding: 100px 5% 40px 5%; max-width: 1200px; margin: 0 auto; text-align: center; }
-        .card { background: var(--moon-glow); padding: 25px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .container { 
+            width: 90%;
+            max-width: 500px;
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
 
-        /* Clock Grid (Fluid) */
-        .clock-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 30px 0; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .clock-unit { background: rgba(0, 0, 0, 0.6); padding: 15px 5px; border-radius: 10px; border: 1px solid var(--sakura-pink); box-shadow: 0 0 10px var(--sakura-glow); }
-        .clock-num { font-family: 'Orbitron'; font-size: 1.5rem; color: var(--sakura-pink); display: block; }
-        .clock-label { font-size: 0.5rem; text-transform: uppercase; opacity: 0.8; }
+        /* Glowing Moon Logo */
+        .lunar-logo {
+            font-size: 80px;
+            display: block;
+            margin: 0 auto 10px auto;
+            filter: drop-shadow(0 0 15px var(--sakura-pink));
+            user-select: none;
+        }
 
-        /* Form Styling */
-        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; font-size: 16px; font-family: 'Quicksand'; }
-        .btn { border: none; padding: 16px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; font-family: 'Orbitron'; background: var(--sakura-pink); color: #000; transition: 0.3s; margin-top: 10px; }
-        .btn:hover { background: #fff; box-shadow: 0 0 20px var(--sakura-pink); transform: translateY(-2px); }
-        .btn-emergency { background: var(--emergency-red); color: white; margin-top: 20px; }
-        .btn-emergency:hover { box-shadow: 0 0 20px var(--emergency-red); }
+        /* Countdown Grid */
+        .clock-container { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 10px; 
+            margin-bottom: 35px; 
+        }
+        .clock-unit { 
+            background: rgba(0,0,0,0.85); 
+            padding: 15px 5px; 
+            border: 1px solid var(--sakura-pink); 
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 183, 197, 0.2);
+        }
+        .clock-num { font-family: 'Orbitron'; font-size: 1.2rem; color: var(--sakura-pink); display: block; }
+        .clock-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        .hidden { display: none; }
-        .status-badge { font-size: 0.65rem; color: var(--sakura-pink); border: 1px solid var(--sakura-pink); padding: 4px 12px; border-radius: 4px; display: inline-block; margin-top: 10px; font-weight: bold; }
-        .auth-link { color: var(--sakura-pink); cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
+        /* Content Card */
+        .card { 
+            background: var(--glass); 
+            padding: 30px 20px; 
+            border-radius: 18px; 
+            border: 1px solid rgba(255, 183, 197, 0.2);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
 
-        /* Hierarchy & Logo Assets */
-        .main-logo { width: 100%; max-width: 180px; filter: drop-shadow(0 0 15px var(--sakura-glow)); margin-bottom: 10px; }
-        .org-chart-img { width: 100%; border-radius: 15px; border: 1px solid var(--sakura-pink); margin-top: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        input { 
+            width: 100%; 
+            padding: 16px; 
+            margin: 12px 0; 
+            background: #000; 
+            border: 1px solid #444; 
+            color: #fff; 
+            border-radius: 10px; 
+            box-sizing: border-box;
+            font-size: 16px; /* Prevents iOS auto-zoom */
+        }
 
-        /* Desktop Overrides */
+        .btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--sakura-pink); 
+            color: #000; 
+            border: none; 
+            border-radius: 10px; 
+            font-family: 'Orbitron'; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn:active { transform: scale(0.96); }
+
+        .auth-link { 
+            color: var(--sakura-pink); 
+            text-decoration: underline; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-top: 25px; 
+            padding: 10px;
+        }
+
+        .hidden { display: none !important; }
+
         @media (min-width: 768px) {
-            .clock-num { font-size: 2.5rem; }
-            .clock-container { gap: 20px; }
-            .card { padding: 40px; }
-            h1 { font-size: 2.5rem; }
+            .clock-num { font-size: 2.2rem; }
+            .lunar-logo { font-size: 100px; }
         }
     </style>
 </head>
 <body>
 
+    <canvas id="sakura-canvas"></canvas>
+
     <nav class="navbar">
-        <div class="logo" style="display: flex; align-items: center; font-size: 1rem;">
-            <img src="logo.jpg" class="nav-logo-img" onerror="this.src='https://i.ibb.co/hR8hV96/2941.jpg'">
-            <span>MOON <span style="color: var(--sakura-pink);">SMP</span></span>
-        </div>
-        <div style="font-size: 0.5rem; font-weight: bold; opacity: 0.7;">V2.0 STABLE</div>
+        <div style="font-family: 'Orbitron'; font-size: 0.9rem; letter-spacing: 3px; color: var(--sakura-pink);">MOON SMP</div>
     </nav>
 
     <div class="container">
-        <img src="logo.jpg" class="main-logo" alt="Moon SMP" onerror="this.src='https://i.ibb.co/hR8hV96/2941.jpg'">
-        <h1 style="font-size: 1.5rem;">Operation: Sakura Moon</h1>
-
+        <div class="lunar-logo">🌙</div>
+        <h1 style="font-family: 'Orbitron'; font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 1px;">Season 2 Operations</h1>
+        
         <div class="clock-container">
-            <div class="clock-unit"><span class="clock-num" id="days">00</span><span class="clock-label">Days</span></div>
-            <div class="clock-unit"><span class="clock-num" id="hours">00</span><span class="clock-label">Hours</span></div>
-            <div class="clock-unit"><span class="clock-num" id="mins">00</span><span class="clock-label">Mins</span></div>
-            <div class="clock-unit"><span class="clock-num" id="secs">00</span><span class="clock-label">Secs</span></div>
+            <div class="clock-unit"><span id="days" class="clock-num">00</span><span class="clock-label">Days</span></div>
+            <div class="clock-unit"><span id="hours" class="clock-num">00</span><span class="clock-label">Hours</span></div>
+            <div class="clock-unit"><span id="mins" class="clock-num">00</span><span class="clock-label">Mins</span></div>
+            <div class="clock-unit"><span id="secs" class="clock-num">00</span><span class="clock-label">Secs</span></div>
         </div>
 
-        <section class="card" style="max-width: 500px; margin: 0 auto 50px auto;">
-            
+        <div class="card">
             <div id="login-box">
-                <h3>Access Portal</h3>
-                <input type="text" id="lUser" placeholder="Username">
-                <input type="password" id="lPass" placeholder="Password or Staff Code">
-                <button class="btn" onclick="handleLogin()">Login</button>
-                <p style="margin-top: 20px;">
-                    <span class="auth-link" onclick="toggleAuth('reg')">Register New Member</span>
-                </p>
+                <h2 style="font-family: 'Orbitron'; margin-bottom: 20px;">LOGIN</h2>
+                <input type="text" id="lUser" placeholder="Username" autocomplete="off">
+                <input type="password" id="lPass" placeholder="Password or Staff Code" autocomplete="off">
+                <button class="btn" onclick="handleLogin()">ACCESS HUB</button>
+                <span class="auth-link" onclick="toggleAuth('reg')">Register New Member</span>
             </div>
 
             <div id="reg-box" class="hidden">
-                <h3>Member Sign-Up</h3>
-                <p style="font-size: 0.7rem; opacity: 0.7;">Create a personal account for Season 2 updates.</p>
-                <input type="text" id="rUser" placeholder="Choose Username">
-                <input type="password" id="rPass" placeholder="Choose Password">
-                <button class="btn" onclick="handleRegister()">Create Account</button>
-                <p style="margin-top: 20px;">
-                    <span class="auth-link" onclick="toggleAuth('login')">Return to Login</span>
-                </p>
+                <h2 style="font-family: 'Orbitron'; margin-bottom: 20px;">REGISTER</h2>
+                <input type="text" id="rUser" placeholder="Choose Username" autocomplete="off">
+                <input type="password" id="rPass" placeholder="Choose Password" autocomplete="off">
+                <button class="btn" onclick="handleRegister()">CREATE ACCOUNT</button>
+                <span class="auth-link" onclick="toggleAuth('login')">Return to Login</span>
             </div>
 
             <div id="profile-box" class="hidden">
-                <p>Welcome, <strong id="userDisplay"></strong></p>
-                <div id="staff-tier" class="hidden"><span class="status-badge">CLEARANCE: CHAIRPERSON</span></div>
-                <div id="member-tier" class="hidden"><span class="status-badge">CLEARANCE: CITIZEN</span></div>
-
-                <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin: 25px 0;">
-
+                <h3>Welcome, <span id="userDisplay" style="color: var(--sakura-pink);"></span></h3>
+                <p id="rank-tag" style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.7;"></p>
+                
                 <div id="staff-controls" class="hidden">
-                    <h3 style="color: var(--emergency-red);">🚨 Emergency Blast</h3>
-                    <textarea id="emergencyMsg" placeholder="Enter critical server announcement..."></textarea>
-                    <button class="btn btn-emergency" id="blastBtn" onclick="initiateBlast()">Send Email Blast</button>
+                    <hr style="border: 0.5px solid #444; margin: 25px 0;">
+                    <h4 style="color: var(--emergency);">EMERGENCY BROADCAST</h4>
+                    <textarea id="msg" style="width:100%; height:80px; background:#000; color:#fff; border:1px solid #444; border-radius:10px; padding:10px;" placeholder="Critical announcement..."></textarea>
+                    <button class="btn" style="background: var(--emergency); color: white;" onclick="sendAlert()">INITIATE BLAST</button>
                 </div>
 
-                <div id="member-controls">
-                    <h4>Member Resources</h4>
-                    <p style="font-size: 0.8rem;">Season 2 launch protocols are being finalized. Check Discord for whitelist status.</p>
-                    <button class="btn" style="background:#333; color:white; font-size:0.7rem;" onclick="alert('Rules coming soon...')">Server Rules</button>
-                </div>
-
-                <button class="btn" onclick="location.reload()" style="background:none; color:var(--sakura-pink); border:1px solid var(--sakura-pink); margin-top:40px; font-size: 0.7rem;">Logout</button>
+                <button class="btn" style="background: none; border: 1px solid var(--sakura-pink); color: var(--sakura-pink); margin-top: 40px;" onclick="location.reload()">LOGOUT</button>
             </div>
-        </section>
-
-        <section>
-            <h2 style="color: var(--sakura-pink); font-size: 1.2rem;">Organizational Hierarchy</h2>
-            <img src="hierarchy.png" class="org-chart-img" onerror="this.src='https://i.ibb.co/6P89B37/2868.png'">
-        </section>
+        </div>
     </div>
 
     <script>
-        // Initialize EmailJS with your Public Key
+        // --- System Setup ---
         (function() { emailjs.init("YNaPHPT4Ov5pdGYuR"); })();
-
         const CHAIRPERSON_CODE = "Moon2026";
 
         function toggleAuth(view) {
@@ -162,74 +205,106 @@
         function handleRegister() {
             const u = document.getElementById('rUser').value.trim();
             const p = document.getElementById('rPass').value.trim();
-            if(!u || !p) { alert("Please fill all fields."); return; }
-            
-            localStorage.setItem('msmp_' + u, p);
-            alert("Account created! Log in now.");
-            toggleAuth('login');
+            if(u && p) {
+                localStorage.setItem('moon_u_' + u, p);
+                alert("Account created locally! Please login.");
+                toggleAuth('login');
+            }
         }
 
         function handleLogin() {
             const u = document.getElementById('lUser').value.trim();
             const p = document.getElementById('lPass').value.trim();
-            const savedPassword = localStorage.getItem('msmp_' + u);
+            const savedPass = localStorage.getItem('moon_u_' + u);
 
             if (p === CHAIRPERSON_CODE) {
-                renderDashboard(u, 'staff');
-            } else if (savedPassword && savedPassword === p) {
-                renderDashboard(u, 'member');
+                launch(u, true);
+            } else if (savedPass && savedPass === p) {
+                launch(u, false);
             } else {
-                alert("Incorrect username or password.");
+                alert("Incorrect credentials.");
             }
         }
 
-        function renderDashboard(name, type) {
+        function launch(name, isStaff) {
             document.getElementById('login-box').classList.add('hidden');
             document.getElementById('reg-box').classList.add('hidden');
             document.getElementById('profile-box').classList.remove('hidden');
-            document.getElementById('userDisplay').innerText = name;
-
-            if(type === 'staff') {
-                document.getElementById('staff-tier').classList.remove('hidden');
-                document.getElementById('staff-controls').classList.remove('hidden');
-            } else {
-                document.getElementById('member-tier').classList.remove('hidden');
-            }
+            document.getElementById('userDisplay').innerText = name.toUpperCase();
+            document.getElementById('rank-tag').innerText = isStaff ? "RANK: CHAIRPERSON" : "RANK: CITIZEN";
+            if(isStaff) document.getElementById('staff-controls').classList.remove('hidden');
         }
 
-        function initiateBlast() {
-            const msg = document.getElementById('emergencyMsg').value;
-            const btn = document.getElementById('blastBtn');
-            if(!msg) return;
-
-            btn.innerText = "TRANSMITTING...";
-            btn.disabled = true;
-
+        function sendAlert() {
+            const m = document.getElementById('msg').value;
+            if(!m) return;
             emailjs.send('service_jnaqic9', 'template_8l64zex', {
-                from_name: "CHAIRPERSON EMERGENCY",
-                message: msg,
-                to_email: 'apolkiel21@gmail.com'
-            }).then(() => {
-                alert("EMERGENCY BLAST SENT SUCCESSFULLY.");
-                btn.innerText = "BLAST SENT";
-            }).catch(() => {
-                alert("TRANSMISSION ERROR.");
-                btn.disabled = false;
-            });
+                from_name: "CHAIRPERSON",
+                message: m,
+                to_email: "apolkiel21@gmail.com"
+            }).then(() => alert("Broadcast Transmitted."));
         }
 
-        // Global Countdown Logic
-        const targetDate = new Date("April 17, 2026 18:00:00").getTime();
-        setInterval(() => {
+        // --- Countdown Engine ---
+        const target = new Date("April 17, 2026 18:00:00").getTime();
+        function updateClock() {
             const now = new Date().getTime();
-            const distance = targetDate - now;
-            if (distance > 0) {
-                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-                document.getElementById("mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-                document.getElementById("secs").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            const diff = target - now;
+            if (diff > 0) {
+                document.getElementById("days").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+                document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
             }
-        }, 1000);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- Sakura Particle Engine ---
+        const canvas = document.getElementById('sakura-canvas');
+        const ctx = canvas.getContext('2d');
+        let leaves = [];
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Leaf {
+            constructor() { this.reset(); this.y = Math.random() * canvas.height; }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 5 + 2;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.wind = Math.random() * 1 - 0.5;
+                this.angle = Math.random() * 360;
+            }
+            update() {
+                this.y += this.speed;
+                this.x += this.wind;
+                this.angle += 1;
+                if (this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle * Math.PI / 180);
+                ctx.fillStyle = '#ffb7c5';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for(let i=0; i<40; i++) leaves.push(new Leaf());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            leaves.forEach(l => { l.update(); l.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
