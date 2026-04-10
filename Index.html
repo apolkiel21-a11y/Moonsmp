@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon SMP | Official Season 2 Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --moon-dark: #050508;
+            --moon-glow: #1a1b26;
+            --sakura-pink: #ffb7c5;
+            --sakura-glow: rgba(255, 183, 197, 0.3);
+            --judicial-purple: #bd93f9;
+            --voter-blue: #8be9fd;
+            --team-green: #50fa7b;
+            --text-main: #e0e0e0;
+        }
+
+        /* Base Reset */
+        body { margin: 0; font-family: 'Quicksand', sans-serif; background-color: var(--moon-dark); color: var(--text-main); scroll-behavior: smooth; overflow-x: hidden; }
+        h1, h2, h3, .logo { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Navbar */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: rgba(5, 5, 8, 0.95); border-bottom: 1px solid var(--sakura-glow); position: fixed; width: 90%; z-index: 1000; }
+        .nav-logo-img { height: 40px; border-radius: 50%; border: 1px solid var(--sakura-pink); margin-right: 12px; vertical-align: middle; }
+        .nav-links { display: flex; list-style: none; gap: 15px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.7rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--sakura-pink); }
+
+        /* Container & Grids */
+        .container { padding: 120px 8% 40px 8%; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .card { background: var(--moon-glow); padding: 25px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 25px; transition: 0.3s; position: relative; }
+        .card:hover { border-color: var(--sakura-pink); box-shadow: 0 0 15px var(--sakura-glow); }
+
+        /* Hero Header */
+        .hero-header { text-align: center; margin-bottom: 50px; }
+        .main-logo { max-width: 200px; filter: drop-shadow(0 0 15px var(--sakura-glow)); margin-bottom: 15px; }
+        .timer { font-family: 'Orbitron'; font-size: 2rem; color: var(--sakura-pink); text-shadow: 0 0 10px var(--sakura-glow); }
+
+        /* Org Chart Hierarchy */
+        .org-container { text-align: center; margin-bottom: 60px; }
+        .org-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .member-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--sakura-pink); padding: 12px; border-radius: 10px; width: 190px; }
+        .role { display: block; font-size: 0.6rem; font-family: 'Orbitron'; color: var(--sakura-pink); margin-top: 5px; }
+
+        /* Auth & Forms */
+        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 5px; box-sizing: border-box; font-family: 'Quicksand'; }
+        .btn { border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; font-family: 'Orbitron'; font-size: 0.75rem; }
+        .btn-pink { background: var(--sakura-pink); color: #000; }
+        .btn-purple { background: var(--judicial-purple); color: #fff; }
+        
+        /* Specialized Sections */
+        .receipt { display: none; margin-top: 15px; padding: 12px; border-radius: 5px; border-left: 4px solid #fff; background: rgba(255,255,255,0.05); font-size: 0.85rem; }
+        .judge-badge { background: rgba(189, 147, 249, 0.1); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--judicial-purple); color: var(--judicial-purple); font-size: 0.7rem; margin-right: 5px; }
+        .hidden { display: none; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        th { color: var(--sakura-pink); text-align: left; padding: 10px; border-bottom: 2px solid #333; }
+        td { padding: 10px; border-bottom: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://i.ibb.co/hR8hV96/2941.jpg" class="nav-logo-img" alt="Moon SMP Logo">
+            MOON <span>SMP</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#auth">Login</a></li>
+            <li><a href="#leadership">Staff</a></li>
+            <li><a href="#judicial">Judicial</a></li>
+            <li><a href="#registry">Registry</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <header class="hero-header">
+            <img src="https://i.ibb.co/hR8hV96/2941.jpg" class="main-logo">
+            <h1>Chairperson's Hub</h1>
+            <div id="countdown" class="timer">00h 00m 00s</div>
+        </header>
+
+        <section id="auth" class="card" style="max-width: 500px; margin: 0 auto 50px auto; text-align: center;">
+            <h3>Citizen Authentication</h3>
+            <div id="auth-step-1">
+                <input type="text" id="mcUser" placeholder="Minecraft Username" required>
+                <input type="email" id="emailUser" placeholder="Email Address" required>
+                <button class="btn btn-pink" onclick="sendOTP()">Request OTP Code</button>
+            </div>
+            <div id="auth-step-2" class="hidden">
+                <p style="font-size: 0.8rem; color: var(--sakura-pink);">Check your email for the OTP.</p>
+                <input type="text" id="otpCode" placeholder="6-Digit OTP">
+                <button class="btn btn-pink" onclick="verifyLogin()">Verify Identity</button>
+            </div>
+            <div id="auth-profile" class="hidden">
+                <p>Logged in as: <strong id="userDisplay"></strong></p>
+                <span id="rankBadge" style="font-size: 0.7rem; color: var(--sakura-pink);"></span>
+                <button class="btn btn-pink" style="margin-top: 15px; font-size: 0.6rem;" onclick="location.reload()">Sign Out</button>
+            </div>
+        </section>
+
+        <section id="leadership" class="org-container">
+            <h2 style="color: var(--sakura-pink);">Server Hierarchy</h2>
+            <div class="org-row">
+                <div class="member-card" style="border-width: 2px; box-shadow: 0 0 10px var(--sakura-glow);">
+                    <strong>KIEL APOLINARIO</strong>
+                    <span class="role">CHAIRPERSON</span>
+                </div>
+            </div>
+            <div class="org-row">
+                <div class="member-card"><strong>ZARC MUFFLIN</strong><span class="role">SERVER PRESIDENT</span></div>
+            </div>
+            <div class="org-row">
+                <div class="member-card"><strong>ROJIE ABLOLA</strong><span class="role">SERVER JUDGE</span></div>
+                <div class="member-card"><strong>HANNA DEGUIRA</strong><span class="role">SERVER JUDGE</span></div>
+            </div>
+            <div class="org-row">
+                <div class="member-card"><strong>CHRISTIAN AQUINO</strong><span class="role">DEPT. OF SOCIAL & DEV</span></div>
+                <div class="member-card"><strong>ASTER KANEKO</strong><span class="role">PUBLIC INFO OFFICER</span></div>
+            </div>
+        </section>
+
+        <div class="grid-2">
+            <section id="judicial" class="card" style="border-left: 5px solid var(--judicial-purple);">
+                <h3 style="color: var(--judicial-purple);">Submit Petition</h3>
+                <div style="margin-bottom: 10px;">
+                    <span class="judge-badge">JUDGE ROJIE</span>
+                    <span class="judge-badge">JUDGE HANNA</span>
+                </div>
+                <input type="text" id="petName" placeholder="Petitioner Username">
+                <textarea id="petDetails" placeholder="State your legal grievance or request..."></textarea>
+                <button class="btn btn-purple" onclick="submitPetition()">File to Courthouse</button>
+                <div id="petReceipt" class="receipt" style="border-color: var(--judicial-purple)">Case filed for Judicial Review.</div>
+            </section>
+
+            <section class="card">
+                <h3>Aternos Status</h3>
+                <img src="https://mcstatus.io/api/v2/widget/java/MOONSMP_SEASON2.aternos.me:43433" style="width:100%; border-radius: 8px;">
+                <p style="font-size: 0.7rem; margin-top: 10px; opacity: 0.5;">MOONSMP_SEASON2.aternos.me:43433</p>
+            </section>
+        </div>
+
+        <section id="registry" class="grid-2">
+            <div class="card" style="border-color: var(--team-green)">
+                <h3 style="color: var(--team-green)">Barangay Registry</h3>
+                <input type="text" id="brgyName" placeholder="Barangay Name">
+                <button class="btn" style="background: var(--team-green); color:#000;" onclick="regBrgy()">Enroll Territory</button>
+                <div id="brgyReceipt" class="receipt" style="border-color: var(--team-green)">Barangay officially recognized.</div>
+            </div>
+            <div class="card">
+                <h3>BIR Tax Oversight</h3>
+                <table>
+                    <tr><th>Type</th><th>Rate</th></tr>
+                    <tr><td>Market</td><td>5 Diamonds</td></tr>
+                    <tr><td>Industrial</td><td>20 Diamonds</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <footer id="hall" class="card" style="text-align: center; border-color: var(--sakura-pink);">
+            <h3 style="color: var(--sakura-pink);">Monument of Creators</h3>
+            <p style="font-size: 0.8rem; font-style: italic;">Honoring the architects of the new world:</p>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                <span class="member-card" style="width: auto; padding: 5px 15px;">Aster Kaneko</span>
+                <span class="member-card" style="width: auto; padding
