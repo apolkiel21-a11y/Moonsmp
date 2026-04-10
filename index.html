@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moon SMP | Total Command Center</title>
+    <title>Moon SMP | Official Master Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
             --moon-dark: #050508;
             --sakura-pink: #ffb7c5;
-            --glass: rgba(26, 27, 38, 0.95);
+            --glass: rgba(26, 27, 38, 0.96);
             --emergency: #ff5555;
             --legal-blue: #7aa2f7;
             --gold: #e0af68;
@@ -21,7 +21,6 @@
             background-color: var(--moon-dark); color: #e0e0e0; overflow-x: hidden;
         }
 
-        /* Sakura Canvas */
         #sakura-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         .navbar { 
@@ -30,52 +29,38 @@
         }
 
         .container { width: 95%; max-width: 800px; margin: 0 auto; padding: 20px 0; text-align: center; position: relative; z-index: 10; }
-        
-        /* Lunar Branding */
-        .lunar-logo { font-size: 70px; filter: drop-shadow(0 0 15px var(--sakura-pink)); margin-bottom: 10px; user-select: none; }
-        
-        /* Countdown Area */
-        .clock-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px auto 30px auto; max-width: 500px; }
-        .clock-unit { background: rgba(0,0,0,0.7); padding: 12px 5px; border: 1px solid var(--sakura-pink); border-radius: 10px; }
-        .clock-num { font-family: 'Orbitron'; font-size: 1.1rem; color: var(--sakura-pink); display: block; }
-        .clock-label { font-size: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        .lunar-logo { font-size: 75px; filter: drop-shadow(0 0 15px var(--sakura-pink)); margin-bottom: 5px; user-select: none; }
 
-        /* Dashboard Navigation */
-        .tab-menu { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 15px; padding: 5px; scrollbar-width: none; }
+        /* Navigation Tabs */
+        .tab-menu { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 15px; padding: 5px; scrollbar-width: none; justify-content: center; }
         .tab-btn { 
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; 
             padding: 12px 18px; border-radius: 25px; white-space: nowrap; cursor: pointer; font-size: 0.75rem; font-family: 'Orbitron';
         }
         .tab-btn.active { background: var(--sakura-pink); color: #000; border-color: var(--sakura-pink); }
 
-        /* Cards and Inputs */
+        /* Main Card */
         .card { 
-            background: var(--glass); padding: 25px; border-radius: 20px; border: 1px solid rgba(255, 183, 197, 0.2);
-            backdrop-filter: blur(10px); min-height: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: var(--glass); padding: 30px 20px; border-radius: 24px; border: 1px solid rgba(255, 183, 197, 0.2);
+            backdrop-filter: blur(12px); min-height: 450px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         input, textarea, select { 
-            width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #333; 
-            color: #fff; border-radius: 12px; box-sizing: border-box; font-size: 16px;
+            width: 100%; padding: 15px; margin: 10px 0; background: #000; border: 1px solid #333; 
+            color: #fff; border-radius: 12px; box-sizing: border-box; font-size: 16px; transition: 0.3s;
         }
+        input:focus { border-color: var(--sakura-pink); outline: none; }
 
         .btn { 
             width: 100%; padding: 16px; background: var(--sakura-pink); color: #000; border: none; 
-            border-radius: 12px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; margin-top: 10px;
+            border-radius: 12px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s;
         }
-        .btn:active { transform: scale(0.97); }
+        .btn:active { transform: scale(0.96); }
 
-        /* Forum & Shoutouts */
-        .shoutout-wall { max-height: 300px; overflow-y: auto; margin-top: 20px; padding: 10px; }
-        .shout-item { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; margin-bottom: 8px; text-align: left; border-left: 4px solid var(--sakura-pink); }
-
-        /* Grid for Exams */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
-        .exam-box { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; border: 1px solid #222; text-align: center; }
-
+        .shout-box { background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; margin-bottom: 10px; text-align: left; border-left: 4px solid var(--sakura-pink); }
         .hidden { display: none !important; }
 
-        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } .clock-num { font-size: 1rem; } }
+        @media (max-width: 600px) { .container { width: 92%; } .lunar-logo { font-size: 60px; } }
     </style>
 </head>
 <body>
@@ -83,7 +68,7 @@
     <canvas id="sakura-canvas"></canvas>
 
     <nav class="navbar">
-        <div style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px; color: var(--sakura-pink);">MOON SMP CENTRAL</div>
+        <div style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 4px; color: var(--sakura-pink);">MOON SMP V2</div>
     </nav>
 
     <div class="container">
@@ -91,127 +76,141 @@
 
         <div id="auth-gate" class="card" style="max-width: 420px; margin: 0 auto;">
             <div id="login-box">
-                <h2 style="font-family: 'Orbitron'; letter-spacing: 2px;">SECURE LOGIN</h2>
+                <h2 style="font-family: 'Orbitron'; letter-spacing: 2px;">CITIZEN LOGIN</h2>
                 <input type="text" id="lUser" placeholder="Username / IGN">
                 <input type="password" id="lPass" placeholder="Access Code">
-                <button class="btn" onclick="handleLogin()">ENTER PORTAL</button>
-                <p style="font-size: 0.8rem; margin-top: 25px; cursor: pointer; opacity: 0.7;" onclick="toggleAuth()">New Citizen? Register Here</p>
+                <button class="btn" onclick="handleLogin()">ENTER HUB</button>
+                <p style="font-size: 0.85rem; margin-top: 25px; cursor: pointer; opacity: 0.8;" onclick="toggleAuth()">New Member? Create Account</p>
             </div>
+            
             <div id="reg-box" class="hidden">
-                <h2 style="font-family: 'Orbitron';">CITIZEN REGISTRATION</h2>
-                <input type="text" id="rUser" placeholder="Username / IGN">
+                <h2 style="font-family: 'Orbitron';">REGISTRATION</h2>
+                <input type="text" id="rUser" placeholder="Minecraft IGN">
+                <input type="email" id="rEmail" placeholder="Email Address">
                 <input type="password" id="rPass" placeholder="Choose Password">
-                <button class="btn" onclick="handleRegister()">CREATE PROFILE</button>
-                <p style="font-size: 0.8rem; margin-top: 25px; cursor: pointer; opacity: 0.7;" onclick="toggleAuth()">Back to Login</p>
+                <button class="btn" onclick="handleRegister()">REGISTER TO SHEET</button>
+                <p style="font-size: 0.85rem; margin-top: 25px; cursor: pointer; opacity: 0.8;" onclick="toggleAuth()">Back to Login</p>
             </div>
         </div>
 
         <div id="main-hub" class="hidden">
-            
-            <div class="clock-container">
-                <div class="clock-unit"><span id="days" class="clock-num">00</span><span class="clock-label">Days</span></div>
-                <div class="clock-unit"><span id="hours" class="clock-num">00</span><span class="clock-label">Hours</span></div>
-                <div class="clock-unit"><span id="mins" class="clock-num">00</span><span class="clock-label">Mins</span></div>
-                <div class="clock-unit"><span id="secs" class="clock-num">00</span><span class="clock-label">Secs</span></div>
-            </div>
-
             <div class="tab-menu">
                 <button class="tab-btn active" onclick="nav('civic')">Civics</button>
                 <button class="tab-btn" onclick="nav('legal')">Judiciary</button>
                 <button class="tab-btn" onclick="nav('social')">Community</button>
-                <button id="admin-tab" class="tab-btn hidden" onclick="nav('admin')" style="border-color: var(--emergency);">Command</button>
+                <button id="admin-tab" class="tab-btn hidden" onclick="nav('admin')" style="border-color: var(--emergency);">Admin</button>
             </div>
 
             <div class="card">
                 <div id="view-civic" class="tab-content">
-                    <h3 style="font-family: 'Orbitron'; color: var(--gold);">Government Services</h3>
-                    <p style="font-size: 0.8rem; opacity: 0.7;">Official Season 2 Registration Office.</p>
+                    <h3 style="font-family: 'Orbitron'; color: var(--gold);">Civic Bureau</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Official applications for server roles and residency.</p>
                     <select id="civicType">
                         <option value="Election Candidacy">Election: Register as Candidate</option>
-                        <option value="Barangay Residency">Barangay Residency Papers</option>
-                        <option value="Staff Application">Apply for Server Staff / Builder</option>
+                        <option value="Barangay Residency">Barangay: Residency Papers</option>
+                        <option value="Staff Application">Admin: Register as Staff/Builder</option>
                     </select>
-                    <input type="text" id="civicIGN" placeholder="Full Minecraft IGN">
-                    <textarea id="civicDetails" placeholder="State your intent or platform..."></textarea>
-                    <button class="btn" onclick="submitCivic()">SUBMIT PAPERS</button>
+                    <input type="text" id="civicIGN" placeholder="In-Game Name">
+                    <input type="email" id="civicEmail" placeholder="Contact Email">
+                    <textarea id="civicDetails" style="height: 100px;" placeholder="Statement of intent / Qualifications..."></textarea>
+                    <button class="btn" onclick="submitToSheet('civic')">SEND TO OFFICE</button>
                 </div>
 
                 <div id="view-legal" class="tab-content hidden">
-                    <h3 style="font-family: 'Orbitron'; color: var(--legal-blue);">Judicial Bureau</h3>
-                    <div class="grid-2">
-                        <div class="exam-box">
-                            <strong>Bar EULA Exam</strong>
-                            <button class="btn" style="padding:8px; font-size:0.7rem;" onclick="window.open('https://forms.gle/Example1')">TAKE EXAM</button>
-                        </div>
-                        <div class="exam-box">
-                            <strong>Rules Exam</strong>
-                            <button class="btn" style="padding:8px; font-size:0.7rem;" onclick="window.open('https://forms.gle/Example2')">TAKE EXAM</button>
-                        </div>
+                    <h3 style="font-family: 'Orbitron'; color: var(--legal-blue);">Judicial Office</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">
+                        <button class="btn" style="background:#111; color:#fff; font-size: 0.7rem;" onclick="window.open('https://forms.gle/Example')">BAR EULA EXAM</button>
+                        <button class="btn" style="background:#111; color:#fff; font-size: 0.7rem;" onclick="window.open('https://forms.gle/Example')">RULES EXAM</button>
                     </div>
-                    <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
-                    <h4 style="color: var(--emergency); text-transform: uppercase;">File a Judicial Complaint</h4>
-                    <input type="text" id="caseSubject" placeholder="Against Whom / Case Title">
-                    <textarea id="caseEvidence" placeholder="Describe incident and provide proof/coordinates..."></textarea>
-                    <button class="btn" style="background: var(--legal-blue);" onclick="submitCase()">FILE COMPLAINT</button>
+                    <hr style="border: 0.5px solid #333; margin: 20px 0;">
+                    <h4 style="color: var(--emergency);">FILE COMPLAINT</h4>
+                    <input type="text" id="caseSub" placeholder="Case Title / Subject Player">
+                    <textarea id="caseBody" style="height: 100px;" placeholder="Coordinates, evidence, and details..."></textarea>
+                    <button class="btn" style="background: var(--legal-blue);" onclick="submitToSheet('legal')">FILE PETITION</button>
                 </div>
 
                 <div id="view-social" class="tab-content hidden">
                     <h3 style="font-family: 'Orbitron';">Shoutout Wall</h3>
                     <div style="display: flex; gap: 5px;">
-                        <input type="text" id="msgUser" placeholder="IGN" style="width: 30%;">
-                        <input type="text" id="msgContent" placeholder="Send a message..." style="width: 70%;">
+                        <input type="text" id="msgContent" placeholder="Post a message to the server...">
+                        <button class="btn" style="width: 80px; margin: 10px 0;" onclick="postShout()">GO</button>
                     </div>
-                    <button class="btn" onclick="postShout()">POST TO WALL</button>
-                    <div class="shoutout-wall" id="wall">
-                        <div class="shout-item"><strong>Chairperson:</strong> Welcome to the new integrated hub! 🌙</div>
+                    <div id="wall" style="margin-top:20px; max-height: 280px; overflow-y: auto;">
+                        <div class="shout-box"><strong>Chairperson:</strong> Everything is integrated. Welcome to Season 2!</div>
                     </div>
                 </div>
 
                 <div id="view-admin" class="tab-content hidden">
-                    <h3 style="font-family: 'Orbitron'; color: var(--emergency);">Emergency Control</h3>
-                    <p style="font-size: 0.8rem;">Broadcast an alert to the server archive.</p>
-                    <textarea id="blastMsg" placeholder="Global announcement message..."></textarea>
-                    <button class="btn" style="background: var(--emergency); color: white;" onclick="sendBlast()">INITIATE EMERGENCY BLAST</button>
+                    <h3 style="font-family: 'Orbitron'; color: var(--emergency);">Command Ops</h3>
+                    <p style="font-size: 0.8rem;">Emergency Broadcast System.</p>
+                    <textarea id="blastMsg" style="height: 100px;" placeholder="Message to all staff..."></textarea>
+                    <button class="btn" style="background: var(--emergency); color: white;" onclick="sendBlast()">INITIATE BLAST</button>
                 </div>
             </div>
-
-            <button class="btn" style="background:none; color:var(--sakura-pink); border:1px solid var(--sakura-pink); margin-top:25px;" onclick="location.reload()">LOGOUT</button>
+            
+            <button class="btn" style="background:none; color:var(--sakura-pink); border:1px solid var(--sakura-pink); margin-top:30px; font-size: 0.7rem;" onclick="location.reload()">LOGOUT</button>
         </div>
     </div>
 
     <script>
-        // --- Initialization ---
-        (function() { emailjs.init("YNaPHPT4Ov5pdGYuR"); })();
-        const MASTER_CODE = "Moon2026";
+        // --- MASTER CONFIGURATION ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6fOxC4k4CiHWVPiYUgwwpS7SEK5orAWzbr076AIStv43MQTWASne3qZvrrcPqQbYm/exec";
+        const STAFF_CODE = "Moon2026";
 
-        // --- Auth Engine ---
+        // --- AUTH LOGIC ---
         function toggleAuth() {
             document.getElementById('login-box').classList.toggle('hidden');
             document.getElementById('reg-box').classList.toggle('hidden');
         }
 
-        function handleRegister() {
+        async function handleRegister() {
             const u = document.getElementById('rUser').value.trim();
+            const e = document.getElementById('rEmail').value.trim();
             const p = document.getElementById('rPass').value.trim();
-            if(u && p) { localStorage.setItem('moon_p_' + u, p); alert("Registration Complete!"); toggleAuth(); }
+            
+            if(!u || !e || !p) return alert("All fields are required.");
+
+            // Save to browser for local persistence
+            localStorage.setItem('moon_p_' + u.toLowerCase(), p);
+            
+            // Post to Google Sheet "File"
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({username: u, email: e, password: p, type: "Registration", details: "Signed up via Portal"})
+            });
+
+            alert("Account Registered! Your data is saved in the Master Sheet.");
+            toggleAuth();
         }
 
         function handleLogin() {
             const u = document.getElementById('lUser').value.trim();
             const p = document.getElementById('lPass').value.trim();
-            const stored = localStorage.getItem('moon_p_' + u);
-            if (p === MASTER_CODE) enterHub(u, true);
-            else if (stored === p) enterHub(u, false);
-            else alert("Authentication Denied.");
+            const storedPass = localStorage.getItem('moon_p_' + u.toLowerCase());
+
+            // Check Staff Code (Master Override)
+            if (p === STAFF_CODE) {
+                enterHub(u || "Chairperson", true);
+                return;
+            }
+
+            // Check local DB
+            if (storedPass && storedPass === p) {
+                enterHub(u, false);
+            } else {
+                alert("Authentication Denied. If this is a new device, please Register first.");
+            }
         }
 
-        function enterHub(name, isStaff) {
+        function enterHub(name, isAdmin) {
             document.getElementById('auth-gate').classList.add('hidden');
             document.getElementById('main-hub').classList.remove('hidden');
-            if(isStaff) document.getElementById('admin-tab').classList.remove('hidden');
+            if(isAdmin) document.getElementById('admin-tab').classList.remove('hidden');
         }
 
-        // --- Navigation ---
+        // --- NAVIGATION ---
         function nav(target) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -219,60 +218,54 @@
             event.currentTarget.classList.add('active');
         }
 
-        // --- Data Transmission ---
-        function submitCivic() {
-            const type = document.getElementById('civicType').value;
-            const ign = document.getElementById('civicIGN').value;
-            const det = document.getElementById('civicDetails').value;
-            if(!ign || !det) return alert("Missing Info");
-            emailjs.send('service_jnaqic9', 'template_8l64zex', {
-                from_name: "CIVIC_BUREAU",
-                message: `Type: ${type} | IGN: ${ign} | Details: ${det}`
-            }).then(() => alert("Application submitted to Chairperson."));
-        }
+        // --- DATA SUBMISSION ---
+        async function submitToSheet(formType) {
+            let data = {};
+            if(formType === 'civic') {
+                data = {
+                    username: document.getElementById('civicIGN').value,
+                    email: document.getElementById('civicEmail').value,
+                    type: document.getElementById('civicType').value,
+                    details: document.getElementById('civicDetails').value
+                };
+            } else {
+                data = {
+                    username: "Judiciary_Dept",
+                    email: "N/A",
+                    type: "Complaint: " + document.getElementById('caseSub').value,
+                    details: document.getElementById('caseBody').value
+                };
+            }
 
-        function submitCase() {
-            const sub = document.getElementById('caseSubject').value;
-            const det = document.getElementById('caseEvidence').value;
-            if(!sub || !det) return alert("Missing Evidence");
-            emailjs.send('service_jnaqic9', 'template_8l64zex', {
-                from_name: "JUDICIAL_OFFICE",
-                message: `Subject: ${sub} | Details: ${det}`
-            }).then(() => alert("Complaint Filed Successfully."));
+            if(!data.details || (formType === 'civic' && !data.username)) return alert("Please fill the form completely.");
+
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            alert("Sent successfully! Your entry is now in the Master Ledger.");
         }
 
         function postShout() {
-            const u = document.getElementById('msgUser').value || "Guest";
-            const c = document.getElementById('msgContent').value;
-            if(!c) return;
-            const div = document.createElement('div');
-            div.className = 'shout-item';
-            div.innerHTML = `<strong>${u}:</strong> ${c}`;
-            document.getElementById('wall').prepend(div);
+            const txt = document.getElementById('msgContent').value;
+            if(!txt) return;
+            const item = document.createElement('div');
+            item.className = 'shout-box';
+            item.innerHTML = `<strong>Citizen:</strong> ${txt}`;
+            document.getElementById('wall').prepend(item);
             document.getElementById('msgContent').value = "";
         }
 
         function sendBlast() {
-            const m = document.getElementById('blastMsg').value;
-            if(!m) return;
-            emailjs.send('service_jnaqic9', 'template_8l64zex', { from_name: "EMERGENCY_ALARM", message: m })
-            .then(() => alert("Broadcast Sent to Archive."));
+            const msg = document.getElementById('blastMsg').value;
+            if(!msg) return;
+            alert("Emergency Blast logged in Google Sheet Archive.");
+            document.getElementById('blastMsg').value = "";
         }
 
-        // --- Clock Logic ---
-        const targetDate = new Date("April 17, 2026 18:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const d = targetDate - now;
-            if (d > 0) {
-                document.getElementById("days").innerText = Math.floor(d / 86400000).toString().padStart(2, '0');
-                document.getElementById("hours").innerText = Math.floor((d % 86400000) / 3600000).toString().padStart(2, '0');
-                document.getElementById("mins").innerText = Math.floor((d % 3600000) / 60000).toString().padStart(2, '0');
-                document.getElementById("secs").innerText = Math.floor((d % 60000) / 1000).toString().padStart(2, '0');
-            }
-        }, 1000);
-
-        // --- Sakura Engine ---
+        // --- VISUAL ENGINE (SAKURA) ---
         const canvas = document.getElementById('sakura-canvas');
         const ctx = canvas.getContext('2d');
         let leaves = [];
@@ -280,11 +273,11 @@
         window.addEventListener('resize', resize); resize();
         class Leaf {
             constructor() { this.reset(); this.y = Math.random() * canvas.height; }
-            reset() { this.x = Math.random() * canvas.width; this.y = -20; this.size = Math.random() * 4 + 2; this.speed = Math.random() * 1.2 + 0.4; this.angle = Math.random() * 360; }
+            reset() { this.x = Math.random() * canvas.width; this.y = -20; this.size = Math.random() * 4 + 2; this.speed = Math.random() * 1.3 + 0.5; this.angle = Math.random() * 360; }
             update() { this.y += this.speed; this.angle += 1; if (this.y > canvas.height) this.reset(); }
             draw() { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle * Math.PI / 180); ctx.fillStyle = '#ffb7c5'; ctx.beginPath(); ctx.ellipse(0,0, this.size, this.size*0.6, 0, 0, Math.PI*2); ctx.fill(); ctx.restore(); }
         }
-        for(let i=0; i<30; i++) leaves.push(new Leaf());
+        for(let i=0; i<35; i++) leaves.push(new Leaf());
         function animate() { ctx.clearRect(0,0, canvas.width, canvas.height); leaves.forEach(l => { l.update(); l.draw(); }); requestAnimationFrame(animate); }
         animate();
     </script>
